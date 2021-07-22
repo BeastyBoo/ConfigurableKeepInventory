@@ -1,0 +1,7 @@
+api-version: "1.16"
+main: me.codyq.configurablekeepinventory.ConfigurableKeepInventory
+
+name: "ConfigurableKeepInventory"
+version: ${project.version}
+description: ${project.description}
+author: CatGamez
