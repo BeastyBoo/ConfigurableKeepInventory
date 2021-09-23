@@ -7,6 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import java.util.concurrent.CompletableFuture;
+
 @RequiredArgsConstructor
 public class DeathListener implements Listener {
 
@@ -19,10 +21,12 @@ public class DeathListener implements Listener {
         if (entityDamageEvent == null) return;
         EntityDamageEvent.DamageCause cause = entityDamageEvent.getCause();
 
-        if (configManager.shouldKeepInventory(cause)) {
-            event.setKeepInventory(true);
-            event.setKeepLevel(true);
-        }
+        CompletableFuture.runAsync(() -> {
+            if (configManager.shouldKeepInventory(cause)) {
+                event.setKeepInventory(true);
+                event.setKeepLevel(true);
+            }
+        });
     }
 
 }
