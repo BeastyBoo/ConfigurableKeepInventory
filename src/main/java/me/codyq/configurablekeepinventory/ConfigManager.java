@@ -8,8 +8,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -29,8 +31,10 @@ public class ConfigManager {
         try {
             config = new YamlConfiguration();
             config.load(configFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        } catch (InvalidConfigurationException ex) {
+            plugin.getLogger().log(Level.WARNING, "Could load configuration file", ex);
         }
     }
 
@@ -60,8 +64,8 @@ public class ConfigManager {
                 FileWriter writer = new FileWriter(configFile);
                 writer.write(config);
                 writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
             }
         }
     }
